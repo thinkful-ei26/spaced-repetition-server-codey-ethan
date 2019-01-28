@@ -9,6 +9,7 @@ const localStrategy = new LocalStrategy((username, password, done) => {
     .then(results => {
       user = results;
       if (!user) {
+        // console.log('un validator ran');
         return Promise.reject({
           reason: 'LoginError',
           message: 'Incorrect username',
@@ -19,6 +20,7 @@ const localStrategy = new LocalStrategy((username, password, done) => {
     })
     .then(isValid => {
       if (!isValid) {
+        // console.log('pw validator ran');
         return Promise.reject({
           reason: 'LoginError',
           message: 'Incorrect password',
@@ -29,6 +31,7 @@ const localStrategy = new LocalStrategy((username, password, done) => {
     })
     .catch(err => {
       if (err.reason === 'LoginError'){
+        console.log('if ran');
         return done(null, false);
       }
       return done(err);

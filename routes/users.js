@@ -9,8 +9,8 @@ const router = express.Router();
 router.post('/', (req, res, next) => {
   console.log('REQ IS\n', req);
   // console.log('REQ BODY IS\n', req.body);
-  let { fullname, username, password } = req.body;
-  fullname = fullname.trim();
+  let { firstName, lastName, username, password } = req.body;
+  let fullname = firstName + lastName;
 
   return User.hashPassword(password)
     .then(digest => {

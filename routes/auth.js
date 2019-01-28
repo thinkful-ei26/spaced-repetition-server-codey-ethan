@@ -18,6 +18,7 @@ const jwtAuth = passport.authenticate('jwt', {
 });
 
 function createAuthToken (user) {
+  console.log(user);
   return jsonwebtoken.sign({user}, JWT_SECRET, {
     subject: user.username,
     expiresIn: JWT_EXPIRY
@@ -26,11 +27,14 @@ function createAuthToken (user) {
 
 router.post('/login', localAuth, (req, res) => {
   const authToken = createAuthToken(req.user);
+  console.log(authToken);
   res.json({authToken});
 });
 
 router.post('/refresh', jwtAuth, (req, res) => {
+  console.log(req);
   const authToken = createAuthToken(req.user);
+  // console.log(authToken);
   res.json({authToken});
 });
 
