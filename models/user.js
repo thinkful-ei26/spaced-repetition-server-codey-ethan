@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 
 const bcrypt = require('bcryptjs');
 
+// const Question = require('./question');
+
 const schema = new mongoose.Schema({
   fullname: {
     type: String,
@@ -18,7 +20,8 @@ const schema = new mongoose.Schema({
     type: String,
     required: true
   },
-  progress: Number
+  progress: Number,
+  questions: []
 });
 
 schema.set('timestamps', true);
