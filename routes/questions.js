@@ -63,17 +63,39 @@ router.use('/', passport.authenticate('jwt', { session: false, failWithError: tr
 //   },
 // ];
 
+
+let tracker = 0;
+
 router.get('/', (req, res, next) => {
+  if (tracker > 9){
+    tracker = 0;
+  }
   // res.json(questions);
   // console.log(req);
   const userId = req.user.id;
   console.log({userId});
 
+  let currentItem;
+  console.log(currentItem);
+
   User.findOne({_id: userId})
     .then(results => {
       // console.log(results.questions);
-      res.json(results.questions);
+      currentItem = results.questions[tracker];
+      tracker++;
+      res.json(currentItem);
+      console.log(tracker);
+      // return currentItem;
     })
+    // .then(User.findOneAndUpdate({_id: userId}, {$pop: {questions: -1}})
+    //   .then(results => {
+    //     console.log(results);
+    //     console.log(currentItem);
+    //   })
+    //   .catch(err => {
+    //     next(err);
+    //   })
+    // )
     .catch(err => {
       next(err);
     });

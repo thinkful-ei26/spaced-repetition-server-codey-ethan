@@ -21,7 +21,9 @@ const schema = new mongoose.Schema({
     required: true
   },
   progress: Number,
-  questions: []
+  questions: {
+    type: Array
+  }
 });
 
 schema.set('timestamps', true);
