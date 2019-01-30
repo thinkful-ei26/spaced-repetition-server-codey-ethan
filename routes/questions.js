@@ -47,7 +47,7 @@ router.get('/', (req, res, next) => {
     });
 });
 
-router.post('/', (req, res, next) => {
+router.put('/', (req, res, next) => {
   const userId = req.user.id;
   //need to know where word is coming back in the body as well as whether the answer is correct
   let wordToUpdate;
