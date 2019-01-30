@@ -10,60 +10,6 @@ const User = require('../models/user');
 router.use('/', passport.authenticate('jwt', { session: false, failWithError: true}));
 
 
-// const questions = [
-//   {
-//     word: 'manzana',
-//     answer: 'apple',
-//     correct: false
-//   },
-//   {
-//     word: 'perro',
-//     answer: 'dog',
-//     correct: false
-//   },
-//   {
-//     word: 'blanco',
-//     answer: 'white',
-//     correct: false
-//   },
-//   {
-//     word: 'espuma',
-//     answer: 'foam',
-//     correct: false
-//   },
-//   {
-//     word: 'tiburon',
-//     answer: 'shark',
-//     correct: false
-//   },
-//   {
-//     word: 'plancha',
-//     answer: 'griddle',
-//     correct: false
-//   },
-//   {
-//     word: 'sal',
-//     answer: 'salt',
-//     correct: false
-//   },
-//   {
-//     word: 'arbol',
-//     answer: 'tree',
-//     correct: false
-//   },
-//   {
-//     word: 'pregunta',
-//     answer: 'question',
-//     correct: false
-//   },
-//   {
-//     word: 'exito',
-//     answer: 'success',
-//     correct: false
-//   },
-// ];
-
-
 let tracker = 0;
 
 router.get('/', (req, res, next) => {
@@ -96,6 +42,27 @@ router.get('/', (req, res, next) => {
     //     next(err);
     //   })
     // )
+    .catch(err => {
+      next(err);
+    });
+});
+
+router.post('/', (req, res, next) => {
+  const userId = req.user.id;
+  //need to know where word is coming back in the body as well as whether the answer is correct
+  let wordToUpdate;
+  let currentWordMemoryValue;
+  let isCorrect;
+  if (isCorrect) {
+    currentWordMemoryValue = currentWordMemoryValue * 2;
+  } else {
+    currentWordMemoryValue = 1;
+  }
+  User.findOneAndUpdate({ _id: userId, word: wordToUpdate }, {$set: {memoryStrength: currentWordMemoryValue}})
+    .then(results => {
+      console.log(results);
+      res.json(results);
+    })
     .catch(err => {
       next(err);
     });
