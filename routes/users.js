@@ -11,61 +11,71 @@ const questions = [
     _id: '100000000000000000000001',
     word: 'manzana',
     answer: 'apple',
-    next: 1
+    next: 1,
+    currentHead: 0
   },
   {
     _id: '100000000000000000000002',
     word: 'perro',
     answer: 'dog',
-    next: 2
+    next: 2,
+    currentHead: 0
   },
   {
     _id: '100000000000000000000003',
     word: 'blanco',
     answer: 'white',
-    next: 3
+    next: 3,
+    currentHead: 0
   },
   {
     _id: '100000000000000000000004',
     word: 'espuma',
     answer: 'foam',
-    next: 4
+    next: 4,
+    currentHead: 0
   },
   {
     _id: '100000000000000000000005',
     word: 'tiburon',
     answer: 'shark',
-    next: 5
+    next: 5,
+    currentHead: 0
   },
   {
     _id: '100000000000000000000006',
     word: 'plancha',
     answer: 'griddle',
-    next: 6
+    next: 6, 
+    currentHead: 0
   },
   {
     _id: '100000000000000000000007',
     word: 'sal',
     answer: 'salt',
-    next: 7
+    next: 7,
+    currentHead: 0
   },
   {
     _id: '100000000000000000000008',
     word: 'arbol',
     answer: 'tree',
-    next: 8
+    next: 8,
+    currentHead: 0
   },
   {
     _id: '100000000000000000000009',
     word: 'pregunta',
     answer: 'question',
-    next: 9
+    next: 9,
+    currentHead: 0
   },
   {
     _id: '100000000000000000000010',
     word: 'exito',
     answer: 'success',
-    next: 0
+    next: 0, 
+    currentHead: 0
   },
 ];
 

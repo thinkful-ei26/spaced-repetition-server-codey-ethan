@@ -29,7 +29,11 @@ const schema = new mongoose.Schema({
         type: Number, 
         default: 1
       },
-      next: Number
+      next: Number,
+      currentHead: {
+        type: Number, 
+        default: 0
+      }
     }
   ],
   head: {

@@ -19,17 +19,29 @@ router.get('/', (req, res, next) => {
   // res.json(questions);
   // console.log(req);
   const userId = req.user.id;
-  console.log({userId});
+  // console.log({userId});
 
   let currentItem;
   // console.log(currentItem);
+
+  let returnHead = {}; 
+
+  // let returnObj = {};
 
   User.findOne({_id: userId})
     .then(results => {
       // console.log(results.questions);
       // console.log(results.head);
+      let returnValue =  results.head;
+      returnHead = {head: returnValue}; 
       currentItem = results.questions[results.head];
       // tracker++;
+      console.log(results.head);
+      console.log(currentItem);
+      // let returnObj = ({...returnHead}, ...{currentItem});
+      // Object.assign(currentItem, {head: results.head});
+      currentItem['currentHead'] = results.head;
+      console.log(currentItem);
       res.json(currentItem);
       // console.log(tracker);
       // return currentItem;
@@ -55,7 +67,7 @@ router.put('/', (req, res, next) => {
   let wordToUpdate = req.body.word;
   let currentWordMemoryStrength = req.body.memoryStrength;
   let newHead = req.body.next;
-  let oldHead = req.body.head;
+  let oldHead = req.body.currentHead;
   let isCorrect = req.body.correct;
   let newWordMemoryStrength;
   if (isCorrect) {
