@@ -8,54 +8,64 @@ const router = express.Router();
 
 const questions = [
   {
+    _id: '100000000000000000000001',
     word: 'manzana',
     answer: 'apple',
-    correct: false
+    next: 1
   },
   {
+    _id: '100000000000000000000002',
     word: 'perro',
     answer: 'dog',
-    correct: false
+    next: 2
   },
   {
+    _id: '100000000000000000000003',
     word: 'blanco',
     answer: 'white',
-    correct: false
+    next: 3
   },
   {
+    _id: '100000000000000000000004',
     word: 'espuma',
     answer: 'foam',
-    correct: false
+    next: 4
   },
   {
+    _id: '100000000000000000000005',
     word: 'tiburon',
     answer: 'shark',
-    correct: false
+    next: 5
   },
   {
+    _id: '100000000000000000000006',
     word: 'plancha',
     answer: 'griddle',
-    correct: false
+    next: 6
   },
   {
+    _id: '100000000000000000000007',
     word: 'sal',
     answer: 'salt',
-    correct: false
+    next: 7
   },
   {
+    _id: '100000000000000000000008',
     word: 'arbol',
     answer: 'tree',
-    correct: false
+    next: 8
   },
   {
+    _id: '100000000000000000000009',
     word: 'pregunta',
     answer: 'question',
-    correct: false
+    next: 9
   },
   {
+    _id: '100000000000000000000010',
     word: 'exito',
     answer: 'success',
-    correct: false
+    next: 0
   },
 ];
 
@@ -72,7 +82,6 @@ router.post('/', (req, res, next) => {
         password: digest,
         fullname,
         questions: questions,
-        progress: 0
       };
       return User.create(newUser);
     })

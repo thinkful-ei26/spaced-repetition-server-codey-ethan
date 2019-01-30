@@ -21,8 +21,21 @@ const schema = new mongoose.Schema({
     required: true
   },
   progress: Number,
-  questions: {
-    type: Array
+  questions: [
+    {
+      _id: mongoose.Schema.Types.ObjectId,
+      word: String,
+      answer: String,
+      memoryStrength: {
+        type: Number, 
+        default: 1
+      },
+      next: Number
+    }
+  ],
+  head: {
+    type: Number,
+    default: 0
   }
 });
 
