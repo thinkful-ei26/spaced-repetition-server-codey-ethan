@@ -20,7 +20,6 @@ const schema = new mongoose.Schema({
     type: String,
     required: true
   },
-  progress: Number,
   questions: [
     {
       _id: mongoose.Schema.Types.ObjectId,

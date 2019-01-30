@@ -50,15 +50,22 @@ router.get('/', (req, res, next) => {
 router.put('/', (req, res, next) => {
   const userId = req.user.id;
   //need to know where word is coming back in the body as well as whether the answer is correct
-  let wordToUpdate;
-  let currentWordMemoryValue;
-  let isCorrect;
+  // console.log(req.body);
+  let wordToUpdate = req.body.word;
+  let currentWordMemoryStrength = req.body.memoryStrength;
+  let isCorrect = req.body.correct;
   if (isCorrect) {
-    currentWordMemoryValue = currentWordMemoryValue * 2;
+    currentWordMemoryStrength = currentWordMemoryStrength * 2;
   } else {
-    currentWordMemoryValue = 1;
+    currentWordMemoryStrength = 1;
   }
-  User.findOneAndUpdate({ _id: userId, word: wordToUpdate }, {$set: {memoryStrength: currentWordMemoryValue}})
+  // console.log(wordToUpdate, isCorrect, currentWordMemoryStrength);
+  /// working mongoDB query is
+  // db.getCollection('users').findOneAndUpdate({'_id': ObjectId('000000000000000000000001'), 'questions.word': 'manzana'}, {$set: {'questions.$.memoryStrength': 12}}, {returnNewDocument: true});
+  let updateObj = { _id: userId, 'questions.word': wordToUpdate };
+  // console.log(updateObj);
+  // User.findOneAndUpdate(updateObj)
+  User.findOneAndUpdate(updateObj, {$set: {'questions.$.memoryStrength': currentWordMemoryStrength}}, {new: true})
     .then(results => {
       console.log(results);
       res.json(results);
