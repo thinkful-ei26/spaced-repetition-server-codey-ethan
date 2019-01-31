@@ -74,7 +74,7 @@ const questions = [
     _id: '100000000000000000000010',
     word: 'exito',
     answer: 'success',
-    next: 0, 
+    next: 10, 
     currentHead: 0
   },
 ];
