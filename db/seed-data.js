@@ -3,8 +3,8 @@
 const users = [
   {
     _id: '000000000000000000000001',
-    fullname: 'Ms Green',
-    username: 'msgreen',
+    fullname: 'c w',
+    username: 'cdub',
     // hash for "password"
     password: '$2a$10$QJCIX42iD5QMxLRgHHBJre2rH6c6nI24UysmSYtkmeFv6X8uS1kgi',
     progress: 0, 
