@@ -16,9 +16,6 @@ router.get('/', (req, res, next) => {
   User.findOne({_id: userId})
     .then(user => {
       let currentItem = user.questions[user.head];
-      // currentItem.currentHead = results.head;
-      //console.log('current item sent to client', currentItem);
-      console.log(user)
       res.json(currentItem);
     })
     .catch(err => {
@@ -32,8 +29,6 @@ router.put('/', (req, res, next) => {
 
   const userId = req.user.id;
   let userAnswer = req.body.answer;
-
-  //console.log(userAnswer);
 
   let userObj;
   let currentQuestion;
