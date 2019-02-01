@@ -15,4 +15,4 @@ The app presents users with a sequence of words, so that they can practice and i
 The server side of this project uses
  * Node with Express to handle routing
  * A MongoDB database hosted on mLab, with Mongoose for schema design and communicating with MongoDB
- * Passport with JWT to handle user authentication
+ * Passport with bCrypt and JWT to handle user authentication
