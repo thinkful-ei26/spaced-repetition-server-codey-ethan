@@ -34,40 +34,44 @@ router.put('/', (req, res, next) => {
 
   let userObj;
   let currentQuestion;
-  let tempHead;
+  let currentHead;
   let arrayIndex;
 
   User.findOne({_id: userId})
     .then(user => {
       userObj = user.toJSON();
-      tempHead = userObj.head;
-      currentQuestion = userObj.questions[tempHead];
+      currentHead = userObj.head;
+      currentQuestion = userObj.questions[currentHead];
 
-      if (userAnswer === userObj.questions[tempHead].answer) {
-        userObj.questions[tempHead].memoryStrength = userObj.questions[tempHead].memoryStrength * 2;
+      if (userAnswer === userObj.questions[currentHead].answer) {
+        userObj.questions[currentHead].memoryStrength = userObj.questions[currentHead].memoryStrength * 2;
+        userObj.questions[currentHead].numberOfAnswers = userObj.questions[currentHead].numberOfAnswers + 1;
+        userObj.questions[currentHead].numberOfCorrectAnswers = userObj.questions[currentHead].numberOfCorrectAnswers + 1;
+
       } else {
-        userObj.questions[tempHead].memoryStrength = 1;
+        userObj.questions[currentHead].memoryStrength = 1;
+        userObj.questions[currentHead].numberOfAnswers = userObj.questions[currentHead].numberOfAnswers + 1;
       }
 
-      arrayIndex = currentQuestion.memoryStrength + tempHead;
+      arrayIndex = currentQuestion.memoryStrength + currentHead;
       if (arrayIndex > user.questions.length - 1) {
         arrayIndex = user.questions.length - 1;
       }
 
       userObj.head = currentQuestion.next;
       currentQuestion.next = userObj.questions[arrayIndex].next;
-      userObj.questions[arrayIndex].next = tempHead;
+      userObj.questions[arrayIndex].next = currentHead;
 
       if (userObj.head === null) {
         userObj.head = 0;
       }
-      console.log(userObj);
+      // console.log(userObj);
       return user.update(userObj);
     })
     // .then(() => User.findOneAndUpdate({_id: userId}, {userObj}, {new: true}))
     .then(result => {
       if(result) {
-        console.log(result);
+        // console.log(result);
         res.json(result);
       } else {
         next();
