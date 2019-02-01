@@ -25,6 +25,27 @@ router.get('/', (req, res, next) => {
     });
 });
 
+router.get('/progress', (req, res, next) => {
+  const userId = req.user.id;
+  User.findOne({_id: userId})
+    .then(user => {
+      // let questions = user.questions;
+      // currentItem.currentHead = results.head;
+      let questionsArray = user.questions.map(question => {
+        return {
+          word: question.word,
+          numberOfAnswers: question.numberOfAnswers,
+          numberOfCorrectAnswers: question.numberOfCorrectAnswers
+        };
+      });
+      console.log(questionsArray);
+      res.json(questionsArray);
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
 router.put('/', (req, res, next) => {
 
   const userId = req.user.id;
