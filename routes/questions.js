@@ -22,20 +22,46 @@ router.get('/', (req, res, next) => {
     });
 });
 
+// only give the word and correct boolean in the body
+
 router.put('/', (req, res, next) => {
   const userId = req.user.id;
-  const {word, memoryStrength, correct, nextWord, head} = req.body;
+  let {word, memoryStrength, correct, nextWord, head} = req.body;
 
-  console.log('Submitted Word: \n', 
-    `*word = ${word}* \n`, 
-    `*mem = ${memoryStrength}*\n`, 
-    `*correct = ${correct}*\n`, 
-    `*next = ${nextWord}*\n`, 
-    `*head = ${head}*\n`);
+  // console.log('Submitted Word: \n', 
+  //   `*word = ${word}* \n`, 
+  //   `*mem = ${memoryStrength}*\n`, 
+  //   `*correct = ${correct}*\n`, 
+  //   `*next = ${nextWord}*\n`, 
+  //   `*head = ${head}*\n`);
   
-  // if the word was correct set its next to 3 and the word at 2 next to 0
+    if(correct) {
+      memoryStrength *= 2;
+    }
+    else if(!correct) {
+      memoryStrength = 1;
+    }
 
-  // if the word was incorrect set position 1 next to it
+    // Find word at index of where our answer is merging
+    let wordToUpdate;
+    User.findOne({_id: userId})
+      .then(result => {
+        wordToUpdate = result.questions[memoryStrength + head]
+      })
+      .then(() => {
+        console.log(wordToUpdate._id)
+        User.findByIdAndUpdate(wordToUpdate._id)
+        // User.findOneAndUpdate(
+        //   {_id: userId},
+        //   {$set: {"username": "1111111" }},
+        //   {$returnNewDocument: true}
+        // )
+      })
+      .then( res =>
+        console.log(res)
+      )
+
+    let newHead = nextWord; // index of next word
 
 
   // let wordToUpdate = req.body.word;
