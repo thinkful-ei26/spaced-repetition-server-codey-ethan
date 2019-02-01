@@ -80,7 +80,7 @@ const questions = [
 ];
 
 router.post('/', (req, res, next) => {
-  console.log('REQ IS\n', req);
+  // console.log('REQ IS\n', req);
   // console.log('REQ BODY IS\n', req.body);
   let { firstName, lastName, username, password } = req.body;
   let fullname = firstName + ' ' + lastName;

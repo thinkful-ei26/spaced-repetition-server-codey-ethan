@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 'use strict';
 
 const express = require('express');
@@ -13,8 +14,10 @@ router.use('/', passport.authenticate('jwt', { session: false, failWithError: tr
 router.get('/', (req, res, next) => {
   const userId = req.user.id;
   User.findOne({_id: userId})
-    .then(results => {
-      let currentItem = results.questions[results.head];
+    .then(user => {
+      let currentItem = user.questions[user.head];
+      // currentItem.currentHead = results.head;
+      console.log('current item sent to client', currentItem);
       res.json(currentItem);
     })
     .catch(err => {
@@ -23,20 +26,157 @@ router.get('/', (req, res, next) => {
 });
 
 router.put('/', (req, res, next) => {
-  const userId = req.user.id;
-  const {word, memoryStrength, correct, nextWord, head} = req.body;
 
-  console.log('Submitted Word: \n', 
-    `*word = ${word}* \n`, 
-    `*mem = ${memoryStrength}*\n`, 
-    `*correct = ${correct}*\n`, 
-    `*next = ${nextWord}*\n`, 
-    `*head = ${head}*\n`);
+  const userId = req.user.id;
+  let userAnswer = req.body.answer;
+
+  console.log(userAnswer);
+
+  let userObj;
+  let currentQuestion;
+  let tempHead;
+  let arrayIndex;
+
+  User.findOne({_id: userId})
+    .then(user => {
+      userObj = user.toJSON();
+      tempHead = userObj.head;
+      currentQuestion = userObj.questions[tempHead];
+
+      if (userAnswer === userObj.questions[tempHead].answer) {
+        userObj.questions[tempHead].memoryStrength = userObj.questions[tempHead].memoryStrength * 2;
+      } else {
+        userObj.questions[tempHead].memoryStrength = 1;
+      }
+
+      arrayIndex = currentQuestion.memoryStrength + tempHead;
+      if (arrayIndex > user.questions.length - 1) {
+        arrayIndex = user.questions.length - 1;
+      }
+
+      userObj.head = currentQuestion.next;
+      currentQuestion.next = userObj.questions[arrayIndex].next;
+      userObj.questions[arrayIndex].next = tempHead;
+
+      if (userObj.head === null) {
+        userObj.head = 0;
+      }
+      console.log(userObj);
+      return user.update(userObj);
+    })
+    // .then(() => User.findOneAndUpdate({_id: userId}, {userObj}, {new: true}))
+    .then(result => {
+      if(result) {
+        console.log(result);
+        res.json(result);
+      } else {
+        next();
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
+  // const userId = req.user.id;
+  // let {word, memoryStrength, correct, nextWord, currentHead} = req.body;
+
+  // console.log('Submitted Word: \n', 
+  //   `*word = ${word}* \n`, 
+  //   `*mem = ${memoryStrength}*\n`, 
+  //   `*correct = ${correct}*\n`, 
+  //   `*next = ${nextWord}*\n`, 
+  //   `*head = ${currentHead}*\n`);
+
+
+  // // let currentWordMemoryStrength = 0;
+  // let newWordMemoryStrength = 0;
+
+  // if (correct) {
+  //   memoryStrength = memoryStrength * 2;
+  //   newWordMemoryStrength = memoryStrength + 1;
+  // } else {
+  //   memoryStrength = 1;
+  //   newWordMemoryStrength = 2;
+  // }
+  // if (memoryStrength > 9){
+  //   memoryStrength = 9;
+  // }
+  // let currentWordQueryObj = {_id: userId, 'questions.word': word};
+  // let futureWordQueryObj = {_id: userId, 'questions.next': newWordMemoryStrength};
+
+  // console.log(newWordMemoryStrength);
+  // console.log('head to set as future words next', currentHead);
+
+  // User.findOneAndUpdate(futureWordQueryObj, {$set: {'questions.$.next': currentHead }}, {new: true})
+  //   .then(() => User.findOneAndUpdate(currentWordQueryObj, {$set: {'questions.$.memoryStrength': memoryStrength, head: nextWord, 'questions.$.next': newWordMemoryStrength}}, {new: true})
+  //   .then(results => {
+  //     res.json(results);
+  //   })
+  //   .catch(err => {
+  //     next(err);
+  //   }));
   
-  // if the word was correct set its next to 3 and the word at 2 next to 0
+  // if the word was correct, set its next to 3 and the word at 2 next to 0
+
+  // if the word was correct, double its memory value, and set its next to be its new memory value plus 1 (eg 3) and the word at 2's (whose current next is 3) next to 0
+
 
   // if the word was incorrect set position 1 next to it
 
+  //if the word was incorrect, set its memory value to 1 and set its next to be its new memory value plus 1 (eg 2) and the word at 1's next to 0
+
+  //apple, 1, true, dog, 0 (apple)
+
+  //bc the answer is correct, we set the memory value to 2
+  //then we need to insert apple after the item whose next is 3 (white)
+
+  //to do this:
+  //we find the item which is currently at 2, and set its next to 0(apple)
+  //we set apple's next to be equal to 2's current next (3-foam) (to maintain the list)
+  //before we do this, we need to set the head of the overall user object to equal apple's next (1)
+
+  //dog, 1, true, white, 1 (dog)
+  
+  //bc the answer is correct, we set the memory value to 2
+  //then we need to insert dog after the item whose next is 3 (apple)
+
+  //to do this:
+  //we find the item which is currently at 2, and set its next to 1(dog)
+  //we set dog's next to be equal to 2's current next (3-foam) (to maintain the list)
+  //before we do this, we need to set the head of the overall user object to equal dog's next (2)
+
+  //white, 1, true, apple, 2 (white)
+  
+  //bc the answer is correct, we set the memory value to 2
+  //then we need to insert white after the item whose next is 3 (dog)
+
+  //to do this:
+  //we find the item which is currently at 2, and set its next to 1(white)
+  //we set white's next to be equal to 2's current next (3-foam) (to maintain the list)
+  //before we do this, we need to set the head of the overall user object to equal white's next (0)
+
+  // if(correct){
+  //   memoryStrength = memoryStrength * 2;
+  // } else {
+  //   memoryStrength = 1;
+  // }
+
+  // let newHead = nextWord;
+
+  // let itemToChange; //(this is the item whose next value equals 3)
+
+  // itemToChange.next = head; //(head happens to equal word)
+
+  // nextWord = itemToChange.next;
+
+  // User.findOne({_id: userId})
+  //   .then(results => {
+  //     console.log(results.questions[memoryStrength]);
+  //   })
+  //   .catch(err => {
+  //     next(err);
+  //   });
+
+  
 
   // let wordToUpdate = req.body.word;
   // let currentWordMemoryStrength = req.body.memoryStrength;
@@ -46,7 +186,7 @@ router.put('/', (req, res, next) => {
   // let newWordMemoryStrength;
   // if (isCorrect) {
   //   currentWordMemoryStrength = currentWordMemoryStrength * 2;
-  //   newWordMemoryStrength = currentWordMemoryStrength + 1;
+  //   newWordMemoryStrength = currentWordMemoryStrength + oldHead;
   // } else {
   //   currentWordMemoryStrength = 1;
   //   newWordMemoryStrength = 2;
