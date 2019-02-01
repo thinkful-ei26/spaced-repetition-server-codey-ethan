@@ -30,10 +30,18 @@ const schema = new mongoose.Schema({
         default: 1
       },
       next: Number,
-      currentHead: {
+      // currentHead: {
+      //   type: Number, 
+      //   default: 0
+      // },
+      numberOfAnswers: {
         type: Number, 
         default: 0
-      }
+      },
+      numberOfCorrectAnswers: {
+        type: Number, 
+        default: 0
+      },
     }
   ],
   head: {
