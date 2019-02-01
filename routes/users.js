@@ -74,13 +74,13 @@ const questions = [
     _id: '100000000000000000000010',
     word: 'exito',
     answer: 'success',
-    next: 0, 
+    next: 10, 
     currentHead: 0
   },
 ];
 
 router.post('/', (req, res, next) => {
-  console.log('REQ IS\n', req);
+  // console.log('REQ IS\n', req);
   // console.log('REQ BODY IS\n', req.body);
   let { firstName, lastName, username, password } = req.body;
   let fullname = firstName + ' ' + lastName;
